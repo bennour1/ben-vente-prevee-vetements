@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProduitController!{% endblock %}
+
+{% block body %}
+    {#
+    (article>h2{Titre de l'article}+div.metadata{Ecrit le 07/05/2020 à 16:00 dans la catégorie Homme}+div.content>img+(p>lorem10)*2+a.btn.btn-primary{Lire la suite})*3
+    #}
+    {% for article in articles %}
+        <article>
+            <h2>{{ article.titre }}</h2>
+            <div class="metadata">Ecrit le {{ article.createdAt | date ('Y/m/d') }} dans la catégorie {{ article.categorie.titre  }} et le domaine {{ article.domaine.titre  }}</div>
+            <div class="content">
+                {% for photo in article.getPhotos() %}
+                    <img src="{{ photo.getTitrePhoto() }}" alt="">
+                {% endfor %}
+                <br><br>
+
+                <p>Marque : {{ article.marque.titre }}</p>
+                <p>Prix avant remise : {{ article.prix }}</p>
+                <p>Remise : {{ article.remise  }}</p>
+                <p> Prix après remise : {{ article.prix-(article.prix*article.remise)/100 }}</p>
+                <p>Categorie : {{ article.categorie.titre  }}</p>
+                <p>Domaine : {{ article.domaine.titre  }}</p>
+
+                <a href="{{ path('show_On_Product', {'id': article.id}) }}" class="btn btn-info">Lire la suite</a>
+                <hr>
+            </div>
+        </article>
+    {% endfor %}
+
+
+
+{% endblock %}
